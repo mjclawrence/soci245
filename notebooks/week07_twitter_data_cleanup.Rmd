@@ -1,0 +1,331 @@
+```{r}
+library(tidyverse)
+library(rtweet)
+library(kableExtra)
+library(lubridate)
+library(ggthemes)
+```
+
+
+```{r}
+## search for 1000 tweets using the rstats hashtag
+hashtag01 <- search_tweets("#StayAtHome", n = 1000, 
+                             include_rts = TRUE,
+                           lang = "en")
+
+hashtag01 <- mutate(hashtag01, hashtag = "#stayathome")
+```
+
+```{r}
+hashtag02 <- search_tweets("#HopeFromHome", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag02 <- mutate(hashtag02, hashtag = "#hopefromhome")
+```
+
+```{r}
+hashtag03 <- search_tweets("#WisconsinPandemicVoting", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag03 <- mutate(hashtag03, hashtag = "#WisconsinPandemicVoting")
+```
+
+```{r}
+hashtag04 <- search_tweets("#alonetogether", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag04 <- mutate(hashtag04, hashtag = "#alonetogether")
+
+```
+
+```{r}
+hashtag05 <- search_tweets("#BTSARMY", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag05 <- mutate(hashtag05, hashtag = "#BTSARMY")
+
+```
+
+```{r}
+hashtag06 <- search_tweets("#IranProtests", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag06 <- mutate(hashtag06, hashtag = "#IranProtests")
+```
+
+```{r}
+hashtag07 <- search_tweets("#PandemicIn5Words", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag07 <- mutate(hashtag07, hashtag = "#PandemicIn5Words")
+
+```
+
+```{r}
+hashtag08 <- search_tweets("#PresidentNewsom", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag08 <- mutate(hashtag08, hashtag = "#PresidentNewsom")
+
+```
+
+```{r}
+hashtag09 <- search_tweets("#snapchatdown", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag09 <- mutate(hashtag09, hashtag = "#snapchatdown")
+
+```
+
+```{r}
+hashtag10 <- search_tweets("#togetherathome", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag10 <- mutate(hashtag10, hashtag = "#togetherathome")
+
+```
+
+```{r}
+hashtag11 <- search_tweets("#TrumpIsALooser", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag11 <- mutate(hashtag11, hashtag = "#TrumpIsALooser")
+
+```
+
+```{r}
+hashtag12 <- search_tweets("#only55", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag12 <- mutate(hashtag12, hashtag = "#only55")
+
+```
+
+```{r}
+hashtag13 <- search_tweets("#RIPBernie", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag13 <- mutate(hashtag13, hashtag = "#RIPBernie")
+
+```
+
+```{r}
+hashtag14 <- search_tweets("#CongratsToTrump", n = 1000,
+                          include_rts = TRUE,
+                           lang = "en")
+
+hashtag14 <- mutate(hashtag14, hashtag = "#CongratsToTrump")
+
+```
+
+```{r}
+hashtag15 <- search_tweets("#NeverBidenNeverTrump", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag15 <- mutate(hashtag15, hashtag = "#NeverBidenNeverTrump")
+
+```
+
+```{r}
+hashtag16 <- search_tweets("#NoMiddleGround", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag16 <- mutate(hashtag16, hashtag = "#NoMiddleGround")
+
+```
+
+```{r}
+hashtag17 <- search_tweets("#CaroleBaskin", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag17 <- mutate(hashtag17, hashtag = "#CaroleBaskin")
+
+```
+
+# Stop Here
+
+```{r}
+hashtag18 <- search_tweets("#roevwade", n = 1000,
+                          include_rts = TRUE,
+                           lang = "en")
+
+hashtag18 <- mutate(hashtag18, hashtag = "#roevwade")
+
+```
+
+```{r}
+hashtag19 <- search_tweets("#ByeByeBernie", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag19 <- mutate(hashtag19, hashtag = "#ByeByeBernie")
+
+```
+
+```{r}
+hashtag20 <- search_tweets("#SomeGoodNews", n = 1000,
+                          include_rts = TRUE,
+                           lang = "en")
+
+hashtag20 <- mutate(hashtag20, hashtag = "#SomeGoodNews")
+
+```
+
+```{r}
+hashtag21 <- search_tweets("#SGN", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag21 <- mutate(hashtag21, hashtag = "#SGN")
+
+```
+
+```{r}
+hashtag22 <- search_tweets("#GreenParty", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+hashtag22 <- mutate(hashtag22, hashtag = "#GreenParty")
+
+```
+
+```{r}
+hashtag23 <- search_tweets("#tornadowatch", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag23 <- mutate(hashtag23, hashtag = "#tornadowatch")
+
+```
+
+```{r}
+hashtag24 <- search_tweets("#BlueNoMatterWho", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag24 <- mutate(hashtag24, hashtag = "#BlueNoMatterWho")
+
+```
+
+```{r}
+hashtag25 <- search_tweets("#DemExit", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag25 <- mutate(hashtag25, hashtag = "#DemExit")
+
+```
+
+```{r}
+hashtag26 <- search_tweets("#scalia", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag26 <- mutate(hashtag26, hashtag = "#scalia")
+
+```
+
+```{r}
+hashtag27 <- search_tweets("#Calexit", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag27 <- mutate(hashtag27, hashtag = "#Calexit")
+
+```
+
+```{r}
+hashtag28 <- search_tweets("#ModernFamily", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag28 <- mutate(hashtag28, hashtag = "#ModernFamily")
+
+```
+
+# Downloaded To Here
+
+
+```{r}
+tweets_df <- bind_rows(hashtag01, 
+                       hashtag02, 
+                       hashtag03, 
+                       hashtag04, 
+                       hashtag05, 
+                       hashtag06, 
+                       hashtag07, 
+                       hashtag08, 
+                       hashtag09, 
+                       hashtag10, 
+                       hashtag11, 
+                       hashtag12, 
+                       hashtag13, 
+                       hashtag14, 
+                       hashtag15, 
+                       hashtag16, 
+                       hashtag17, 
+                       hashtag18, 
+                       hashtag19, 
+                       hashtag20, 
+                       hashtag21, 
+                       hashtag22, 
+                       hashtag23, 
+                       hashtag24, 
+                       hashtag25, 
+                       hashtag26, 
+                       hashtag27, 
+                       hashtag28)
+```
+
+
+
+# Late Hashtags
+
+```{r}
+data_link <- "https://raw.githubusercontent.com/mjclawrence/soci245/s20/data/tweets_df.Rda" # where the data is posted
+
+load(url(data_link)) # loading the data from that site
+```
+
+
+```{r}
+hashtag29 <- search_tweets("#kaepernick", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag29 <- mutate(hashtag29, hashtag = "#kaepernick")
+
+```
+
+```{r}
+hashtag30 <- search_tweets("#TrumpBurialPits", n = 1000,
+                           include_rts = TRUE,
+                           lang = "en")
+
+hashtag30 <- mutate(hashtag30, hashtag = "#TrumpBurialPits")
+
+```
+
+```{r}
+tweets_df2 <- bind_rows(hashtag29, hashtag30)
+tweets_df2 <- tweets_df2 %>%
+  select(created_at, text, hashtag, is_retweet, retweet_count, country)
+
+tweets_df2 <- bind_rows(tweets_df, tweets_df2)
+
+save(tweets_df2, file = "/Users/lawrence/Documents/GitHub/soci245/data/tweets_df2.Rda")
+```
