@@ -1,0 +1,230 @@
+---
+title: "Twitter Analysis"
+author: "ML"
+date: "4/10/2020"
+output: html_document
+---
+  
+## Welcome to R Studio!
+
+If you want to change the display of this screen, click the "Tools" menu and select "Global Options". Open the "Appearance" tab and choose an editor font size and an editor theme you like before applying your selections. 
+  
+Some navigation before we begin:
+  
+- The upper left pane is the *text editor* where you keep all of your commands.
+- The lower left pane is the *console* where the commands will be executed.
+- The upper right pane's `Environment` window will show the data that you load.
+- The lower right pane will show previews of your R Markdown documents, plots, help documents, packages, and other features.
+
+This file is an R Markdown Notebook which is an R Markdown file that allows you to integrate text, R code, and R output into a single document. This is the recommended file type for our course, but you may want to use other file types in the future. All the possible file types are found when you click File>New File. For our purposes - and for producing transparent and reproducible research - the advantage of an R Notebook is that you can easily include text, notes, and comments that are not code (like this paragraph).
+
+How does R know what is code and what is regular text? In an R Notebook, code goes in a fenced code block. To open the fence, type three backticks and an r in curly brackets on a single line; to close the fence, type three backticks on a single line like this:
+
+```{r}
+
+```
+
+Everything between those fences will be run as code (unless it is preceded by a hashtag, which signifies a comment in a chunk).
+
+Let's practice with a simple example of using R as a calculator. Click the green arrow in the chunk below.
+
+```{r}
+200 + 45
+```
+
+You should now see our course number calculated as the output below the chunk.
+
+
+## Getting Started With R
+
+Today we will learn one way to import data into R and how to get simple summaries of different types of variables.
+
+We'll begin by loading the packages we need for our analysis. Packages are additional functions that supplement base R. I already installed them in our class workspace, but we will have to load them using the `library()` function to use them.
+
+```{r, warning = FALSE, error = FALSE, message = FALSE}
+library(plyr) # for data cleanup
+library(tidyverse) # for data wrangling
+library(rtweet) # for getting and processing tweets
+library(kableExtra) # for styling tables 
+library(lubridate) # for working with dates
+```
+
+Now we are ready to load the data into R Studio. I have posted a file with all the data on a website. This chunk pulls the data from that site into our workspace as a *data frame* called `tweets_df`. 
+
+```{r}
+data_link <- "https://raw.githubusercontent.com/mjclawrence/soci245/s20/data/tweets_df.Rda" # where the data is posted
+
+load(url(data_link)) # loading the data from that site
+```
+
+You will know the data frame loaded correctly if it appears in the top right pane's `Environment` tab. You can see that our data frame has 23,647 observations of 6 variables. To explore what the variables are, click the blue circle with the white arrow next to the data frame name. Here are the descriptions of the six vaiables:
+  
+- `created_at`: date and time the tweet was sent
+
+- `text`: content of the tweet
+
+- `hashtag`: the hashtag from our crowdsourced list that is included in the tweet (note that there may be other hashtags in the text as well)
+
+- `is_retweet`: a variable that takes the value "TRUE" if the tweet is a retweet and "FALSE" if the tweet is not a retweet
+
+- `retweet_count`: the number of times the tweet was retweeted
+
+- `country`: the country from which the tweet was sent if geolocation is available
+
+
+## Describing Our Data
+
+It is always a good idea to get to know your data with simple descriptives. One first step with this dataset would be to see what hashtags are included. We can display all the values of the `hashtag` variable using the `table()` function. In this chunk below, we see the basic syntax of many R functions: we state the name of the data frame (tweets_df) and separate it with a dollar sign ($) from the name of the variable we are interested in. And we wrap those pieces in the function we are using (table()). Click the green arrow to execute this chunk.
+
+```{r}
+table(tweets_df$hashtag)
+```
+
+Each of the twenty eight hashtags is listed with the number of tweets matching that hashtag below it. How many observations are there with the hashtag you offered?
+  
+These hashtags are sorted alphabetically. To see which hashtags have the most observations in our data frame, we can sort them by decreasing frequency by wrapping our table in the sort() function and adding the `decreasing = TRUE` option:
+  
+```{r}
+sort(table(tweets_df$hashtag), decreasing = TRUE)
+```
+
+How do you think you sort the table so that `#only55` shows up first?
+  
+Try making a table showing how many tweets come from each country.
+
+You will notice that the frequencies in this table do not add up to 23,647. That is because most tweets in our dataset do not have geomarkers. Knowing where tweets are sent from is something we often want to know as analysts, but it is very rare that location data is available.
+
+### Describing Retweets
+
+Let's find out which hashtag is retweeted the most. To do so, we are going to create a new data frame called `retweets` that is based on the existing `tweets_df` dataframe. That's the first line in the chunk below. Since the chunk includes several functions, we can "chain" them together using the %>% symbol. In the second line, we say that we want to group our new data frame by the values of the `hashtag` variable (so our new data frame will have 28 observations instead of 23,647). The third line says what we want to do for each hashtag: create a new variable called `count` that is equal to the maximum value for the `retweet_count` variable in the `tweets_df` data frame. The fourth line says that we want to reorder the observations so that the hashtag with the highest value for our new `count` variable will be first. The final two lines format the data in our data frame into a nice table that will appear in the Viewer in the bottom right pane after running this chunk.
+
+```{r}
+retweet_counts <- tweets_df %>% # new df's name based to existing df
+  group_by(hashtag) %>%
+  summarise(count = max(retweet_count)) %>%
+  arrange(desc(count)) %>%
+  kable() %>%
+  kable_styling()
+
+retweet_counts
+```
+
+Which hashtag has the most retweets? Which hashtag has the least?
+  
+It looks like the #BTSARMY is really popular!
+
+Let's find the text in the most retweeted tweet. The code to do so starts simple and then gets more complicated. The first part is syntax we have seen before: the name of the data frame and the name of the variable whose value we want separated by a dollar sign. And then we have a bracket. In R, bracketing means we want to pull a value only for observations that meet some condition described inside the brackets. In this case, we only want the observation where the value of the `retweet_count` variable is equal to the maximum value of the `retweet_count` variable.
+
+```{r}
+tweets_df$text[tweets_df$retweet_count==max(tweets_df$retweet_count)]
+```
+
+Cute.
+
+## Filtering
+
+Using brackets is a good strategy when you want to index by the values of some specific variable. There will also be times when you want to analyze the subset of your data frame matching some condition. For example, what if we only want to look at all the observations with the #SomeGoodNews hashtag. In R syntax, we can `filter` the `tweets_df` data frame to only keep those observations where the value of the `hashtag` variable is equal to "#SomeGoodNews". We'll put the observations with that hashtag in a new data frame called `my_hashtag`.
+
+```{r}
+my_hashtag <- tweets_df %>%
+  filter(hashtag == "#SomeGoodNews") # Case Matters!
+```
+
+Here's the first part of your assignment: find the text of the tweet that has the most retweets for the hashtag you offered to Wednesday's discussion board. In a reply to your original discussion board post, describe the text and note how many retweets it received (based on the counts in our dataset).
+
+## Sentiment Analysis
+
+Some of you have asked about how to measure the tone of tweets, which is something Ince et al discuss in their paper about #BlackLivesMatter. We'll try a common method of counting up the positive and negative words in a message and using them to calculate a "sentiment score."
+
+To start, we need to load a file of positive words and a file of negative words:
+  
+```{r, message = FALSE, warning = FALSE, error = FALSE}
+
+pos.words <- scan("https://raw.githubusercontent.com/mjclawrence/soci245/s20/data/positive_words.csv", what = "character")
+
+neg.words <- scan("https://raw.githubusercontent.com/mjclawrence/soci245/s20/data/negative_words.csv",  what = "character")
+```
+
+What are some of the positive and negative words in these lists?
+  
+```{r}
+### Positive Words
+head(pos.words, 20)
+```
+
+```{r}
+### Negative Words
+tail(neg.words, 20)
+```
+
+This next chunk sets up the function that will search all the tweets for individual words, count the positive and negative words, and calculate the scores. It's a lot of code...we won't go over it today but will need to run it.
+
+```{r set up search function}
+tweet <- as.vector(my_hashtag$text)
+score.sentiment = function(sentences, pos.words, neg.words, .progress='none')
+{
+  require(plyr)
+  require(stringr)
+  
+  scores = laply(sentences, function(tweet, pos.words, neg.words) {
+    
+    # clean up sentences with R’s regex-driven global substitute, gsub():
+    tweet = gsub('[[:punct:]]', '', tweet)
+    tweet = gsub('[[:cntrl:]]', '', tweet)
+    tweet = gsub('\\d+', '', tweet)
+    # and convert to lower case:
+    tweet = tolower(tweet)
+    
+    # split into words. str_split is in the stringr package
+    word.list = str_split(tweet, '\\s+')
+    # sometimes a list() is one level of hierarchy too much
+    words = unlist(word.list)
+    
+    # compare our words to the dictionaries of positive & negative terms
+    pos.matches = match(words, pos.words)
+    neg.matches = match(words, neg.words)
+    
+    # match() returns the position of the matched term or NA
+    # we just want a TRUE/FALSE:
+    pos.matches = !is.na(pos.matches)
+    neg.matches = !is.na(neg.matches)
+    
+    # and conveniently enough, TRUE/FALSE will be treated as 1/0 by sum():
+    score = sum(pos.matches) - sum(neg.matches)
+    
+    return(score)
+  }, pos.words, neg.words, .progress=.progress )
+  
+  scores.df = data.frame(score=scores, text=tweet)
+  return(scores.df)
+}
+```
+
+
+Now let's create a data frame with the tweets and apply the function to that data frame. We'll also create a new data frame called `result` which will show the text of the tweet and the sentiment score:
+  
+```{r run the function and save the scores}
+##Put tweets in data frame
+tweet_text_df <- as.data.frame(tweet)
+
+##Apply sentiment function to the tweets
+result <- score.sentiment(tweet_text_df$tweet,pos.words,neg.words)
+```
+
+It's time to see the distribution of sentiment scores...
+
+```{r sentiment score summary}
+summary(result$score)
+```
+
+How would you interpret this distribution? For the second part of your assignment, describe the distribution of your hashtag's sentiment score in the reply to your discussion board post. Is the average positive or negative? What is the range?
+  
+Finally, you can also plot the distribution of sentiment scores. Be sure to change the name of your hashtag in the title text if you are using a different one!
+  
+```{r histogram of scores}
+sentiment_plot1 <- ggplot(result, aes(x = score))
+sentiment_plot1 + geom_bar(fill = "Blue") + 
+  labs(title ="Distribution of Sentiment Scores in #SomeGoodNews",
+       y = "Count of Tweets", x = "Sentiment Score")
+```
+
