@@ -1,5 +1,5 @@
 ---
-title: "Open Policing Project Tutorial"
+title: "Stanford Open Policing Project Tutorial"
 output:
   html_document:
     code_folding: hide
@@ -14,16 +14,14 @@ First, let's load the necessary libraries and data that will allow us to begin o
 library(tidyverse)
 library(lubridate)
 # For Veil of Darkness
-#install.packages(c("lutz", "suncalc", "splines"))
 library(lutz)
 library(suncalc)
 library(splines)
 
 ## Load the data
 # Replace the path below with the path to where your data lives
-data_path <- "https://github.com/mjclawrence/soci245/s20/data/open_policing_project.rds"
-stops <- read_rds(data_path)
-```
+stops <- readRDS(gzcon(url("https://raw.githubusercontent.com/mjclawrence/soci245/s20/data/open_policing_project.rds")))
+
 # Additional data and fixed values we'll be using
 population_2017 <- tibble(
   subject_race = c(
@@ -448,8 +446,7 @@ stops %>%
   )
 ```
 
-Wow! A sizeable share of searches of white individuals must have been taking place at the airport with zero hit rates, deflating the white hit rate we were calculating before. But this didn't influence hit rates of black or Hispanic drivers as much. Our aggregate hit rate analysis now shows stronger evidence of bias, similar to our by-location plot. (Note, thought, that aggregate and by-location hit rates do not necessarily always tell the same story---a phenomenon known as Simpson's Paradox---which is why it's important
-to check both to get the full picture.) 
+Wow! A sizeable share of searches of white individuals must have been taking place at the airport with zero hit rates, deflating the white hit rate we were calculating before. But this didn't influence hit rates of black or Hispanic drivers as much. Our aggregate hit rate analysis now shows stronger evidence of bias, similar to our by-location plot. (Note, thought, that aggregate and by-location hit rates do not necessarily always tell the same story---a phenomenon known as Simpson's Paradox---which is why it's important to check both to get the full picture.) 
 
 
 ### Caveats about the outcome test
