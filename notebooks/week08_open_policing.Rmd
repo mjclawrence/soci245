@@ -21,9 +21,9 @@ library(splines)
 
 ## Load the data
 # Replace the path below with the path to where your data lives
-data_path <- "/Users/lawrence/Downloads/kx738rc7407_pa_philadelphia_2019_12_17.rds"
+data_path <- "https://github.com/mjclawrence/soci245/s20/data/open_policing_project.rds"
 stops <- read_rds(data_path)
-
+```
 # Additional data and fixed values we'll be using
 population_2017 <- tibble(
   subject_race = c(
